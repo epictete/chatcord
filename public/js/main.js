@@ -20,8 +20,8 @@ socket.on("roomUsers", ({ room, users }) => {
 });
 
 // Message from server
-socket.on("message", message => {
-    outputMessage(message);
+socket.on("output", data => {
+    handleOutput(data);
 
     // Scroll
     chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -43,14 +43,16 @@ chatForm.addEventListener("submit", e => {
 });
 
 // Output message to DOM
-const outputMessage = message => {
-    const div = document.createElement("div");
-    div.classList.add("message");
-    div.innerHTML = `<p class="meta">${message.username} <span>${message.time}</span></p>
-    <p class="text">
-        ${message.text}
-    </p>`;
-    chatMessages.appendChild(div);
+const handleOutput = data => {
+    for (let i = 0; i < data.length; i++) {
+        const div = document.createElement("div");
+        div.classList.add("message");
+        div.innerHTML = `<p class="meta">${data[i].username} <span>${data[i].time}</span></p>
+        <p class="text">
+            ${data[i].text}
+        </p>`;
+        chatMessages.appendChild(div);
+    }
 };
 
 // Add room name to DOM
